@@ -1,9 +1,10 @@
 This prototype is based from https://github.com/annthurium/virtual-waiting-room 
 
-simple log-in page with passport js
-virtual waiting room 
-sms invite to add a 3rd party participant
+## main features ##
 
+ * simple log-in page with passport js for patient / provider
+ * virtual waiting room for patient
+ * sms invite to add a 3rd party participant by entering their phone number
 
 ## Preparing the application
 
