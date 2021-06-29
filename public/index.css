@@ -1,0 +1,126 @@
+/*add media query for mobile screen*/
+
+@media only screen and (max-device-width: 480px) {
+        div#wrapper {
+            width: 400px;
+        }
+
+        div#header h1 {
+            font-size: 140%;
+        }
+
+        #content {
+            float: none;
+            width: 100%;
+        }
+
+        #navigation {
+            float:none;
+            width: auto;
+        }
+    }
+
+
+* {
+
+ background-color: #DFCFBE;
+ color: #001489;
+ font-family: "Gill Sans", sans-serif;
+}
+
+body {
+    margin-left: 30%;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: 2em;
+}
+
+h1 {
+    margin-left: 30%;
+font-weight: normal;
+  color: #001489;
+}
+
+h3 {
+        margin-left: 30%;
+font-weight: normal;
+  color: #001489;
+}
+
+button {
+    border: 2px solid #FFFFFF;
+    border-radius: 6px;  background: #001489;
+    color: #fff;
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+
+.button-center {
+    margin-left: 30%;
+    position: relative;
+    top: 20px;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+button:hover {
+ background: #694d3c;
+}
+
+#local-media-container {
+  position: relative;
+  margin: auto;
+  width: 40%;
+  padding: 10px;
+
+}
+
+.remoteMediaContainer {
+  position: relative;
+  margin: auto;
+  width: 40%;
+  padding: 10px;
+}
+
+.waiting-room {
+
+    position: relative;
+    margin: auto;
+    width: 40%;
+    padding: 10px;
+}
+
+
+
+.displayName {
+  position: absolute;
+  top: 8px;
+  left: 0;
+  margin: 0;
+  padding: 0.5em 0.5em 0.5em 2em;
+  background: rgba(242, 47, 70, 0.8);
+  color: #fff;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.hidden {
+ display: none;
+}
+
+.center {
+    margin: auto;
+    width: 60%;
+    padding: 20px;
+    border: 2px solid #eee;
+    border-radius: 6px;
+}
+
+.form-class {
+    width: 60%;
+    padding:10px;
+    margin:10px 0; 
+    border: 2px solid #eee;
+    border-radius: 6px;
+}

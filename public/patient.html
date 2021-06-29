@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+ <head>
+   <title>Owl Hospital Telemedicine App</title>
+   <link rel="stylesheet" href="index.css" />
+ </head>
+ <body>
+   <h1>🦉 Welcome to Owl Hospital Telemedicine 🦉</h1>
+ </body>
+ <button id="join-button" class="button-center">Join Room</button>
+ <button id="leave-button" class="hidden button-center">Leave Room</button>
+ <div id="waiting-room" class="waiting-room hidden">
+   <p>Thanks! Your provider will be with you shortly.</p>
+   <p>In the meantime watch this video about flu shot</p>
+   <iframe width="480" height="360" src="https://www.youtube.com/embed/E1h2Aqr8cu8" title="Flu Shot Explained" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+ </div>
+ <!-- add a family member when in meeting--> 
+ <div id="invite-feature" class="hidden button-center">
+ <!-- add an invite button--> 
+<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js" integrity="sha384-qlmct0AOBiA2VPZkMY3+2WqkHtIQ9lSdAsAn5RUJD/3vA5MKDgSGcdmIv4ycVxyn" crossorigin="anonymous"></script>
+<!-- add a form to enter sms --> 
+  <div class="center hidden">
+    <button id="close" style="float: right;">X</button>
+    <form id="phoneNumberForm" name="phoneNumberForm" method="POST" action="/api/messages">
+    <input class="form-class" type="text" id="phoneNumber" name="phoneNumber" placeholder="+1xxxxxxxxxx">
+    <br>
+    <input class="form-class" type="submit" id="submit" value="Submit">
+    </form>
+  </div>
+  <button id="invite-button">Invite Family</button>
+ </div>
+ <div id="local-media-container"></div>
+ <script src="./index.js"></script>
+ <script src="./invite.js"></script>
+ <script src="//media.twiliocdn.com/sdk/js/video/releases/2.3.0/twilio-video.min.js"></script>
+
+<!-- virtual patient waiting room component below --> 
+ <script>
+   const providerIdentity = "provider";
+
+   async function onJoinButtonClick(event) {
+     await joinRoom(event, "patient");
+     showInviteFeature(); // should only show this when the actual room is established
+
+     // is there a doctor in the house??
+     // if not, show the waiting room
+     if (!isProviderPresent(room.participants)) {
+       showWaitingRoom();
+     }
+
+     // if the provider joins, hide the waiting room
+     room.on("participantConnected", (participant) => {
+       if (participant.identity === providerIdentity) {
+         hideWaitingRoom();
+       }
+     });
+
+     // hide the waiting room if the patient disconnects
+     room.on("disconnected", () => {
+       hideWaitingRoom();
+       hideInviteFeature();
+     });
+     event.preventDefault();
+   }
+
+   const isProviderPresent = (participantMap) => {
+     for (const participant of participantMap.values()) {
+       if (participant.identity === providerIdentity) {
+         return true;
+       }
+     }
+     return false;
+   };
+
+   const showInviteFeature = () => {
+    const inviteFeature = document.getElementById("invite-feature");
+         if (inviteFeature.classList.contains("hidden")) {
+       inviteFeature.classList.toggle("hidden");
+     }
+   };
+
+  const hideInviteFeature = () => {
+    const inviteFeature = document.getElementById("invite-feature");
+         if (!inviteFeature.classList.contains("hidden")) {
+       inviteFeature.classList.toggle("hidden");
+     }
+   };
+
+
+   const hideWaitingRoom = () => {
+     const waitingRoom = document.getElementById("waiting-room");
+     // check that the waiting room is visible, before hiding
+     // just to avoid weird state bugs
+     if (!waitingRoom.classList.contains("hidden")) {
+       waitingRoom.classList.toggle("hidden");
+       stopWaitingRoomVideo();
+     }
+   };
+
+   const showWaitingRoom = () => {
+     const waitingRoom = document.getElementById("waiting-room");
+     // check that the waiting room is hidden, before showing
+     // just to avoid weird state bugs
+     if (waitingRoom.classList.contains("hidden")) {
+       waitingRoom.classList.toggle("hidden");
+     }
+   };
+
+   const stopWaitingRoomVideo = () => {
+     const iframe = document.querySelector("iframe");
+     const video = document.querySelector("video");
+     if (iframe !== null) {
+       const iframeSrc = iframe.src;
+       iframe.src = iframeSrc;
+     }
+     if (video !== null) {
+       video.pause();
+     }
+   };
+
+   const joinButton = document.getElementById("join-button");
+   joinButton.addEventListener("click", onJoinButtonClick);
+
+   const leaveButton = document.getElementById("leave-button");
+   leaveButton.addEventListener("click", onLeaveButtonClick);
+ </script>
+</html>

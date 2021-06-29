@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+ <head>
+   <title>Owl Hospital Telemedicine App</title>
+   <meta name="viewport" content="width=device-width" />
+   <link rel="stylesheet" href="../public/index.css" />
+ </head>
+
+ <body>
+   <h1>🦉 Welcome to Owl Hospital Telemedicine 🦉</h1>
+   <h3> You are joining as a guest in this telehealth visit !!! <3</h3>
+ </body>
+ <button id="join-button" class="button-center">Join Room</button>
+ <button id="leave-button" class="hidden button-center">Leave Room</button>
+ <div id="local-media-container"></div>
+
+ <script src="//media.twiliocdn.com/sdk/js/video/releases/2.3.0/twilio-video.min.js"></script>
+ <script src="../public/index.js"></script>
+ <script>
+
+  // need some checking if thrid party joined without any other participant for access control
+  // this is not an optimal way of checking allowing the third party to create a room and kick them out
+  const patientIdentity = "patient";
+
+     async function onJoinButtonClick(event) {
+     await joinRoom(event, "thirdParty");
+     console.log("is patient in the room: " + isPatientPresent(room.participants));
+
+     if (!isPatientPresent(room.participants)) {
+     //room.disconnect(); 
+     //force 3rd party to disconnect from the room if patient is not there
+     room.localParticipant.tracks.forEach((publication) => {
+     const track = publication.track;
+     // stop releases the media element from the browser control
+     // which is useful to turn off the camera light, etc.
+     track.stop();
+     const elements = track.detach();
+     elements.forEach((element) => element.remove());
+     window.location.reload()
+   });
+     room.disconnect();
+     alert('patient is not in the room');
+   }
+   event.preventDefault();
+ }
+     
+     const isPatientPresent = (participantMap) => {
+     for (const participant of participantMap.values()) {
+       if (participant.identity === patientIdentity) {
+         return true;
+       }
+     }
+     return false;
+   };
+
+   const joinButton = document.getElementById("join-button");
+   joinButton.addEventListener("click", onJoinButtonClick);
+
+   const leaveButton = document.getElementById("leave-button");
+   leaveButton.addEventListener("click", onLeaveButtonClick);
+ </script>
+</html>

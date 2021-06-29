@@ -1,0 +1,5 @@
+<% if (!user) { %>
+	<p>Welcome! Please <a href="/providerlogin">log in</a>.</p>
+<% } else { %>
+	<p>Hello, <%= user.username %>. You can access your provider portal <a href="/provider">here</a>.</p>
+<% } %>

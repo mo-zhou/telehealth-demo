@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+ <head>
+   <title>Owl Hospital Telemedicine App</title>
+   <link rel="stylesheet" href="index.css" />
+ </head>
+
+ <body>
+   <h1>🦉 Welcome to Owl Hospital Telemedicine 🦉</h1>
+   <h3>Thanks for caring for our patients <3</h3>
+ </body>
+ <button id="join-button" class="button-center">Join Room</button>
+ <button id="leave-button" class="hidden button-center">Leave Room</button>
+ <button id="muteAudio" class="hidden">Mute</button>
+ <button id="unmuteAudio" class="hidden">Unmute</button>
+ <button id="stopVideo" class="hidden">Stop Video</button>
+ <button id="startVideo" class="hidden">Start Video</button>
+ <div id="local-media-container"> </div>
+
+ <script src="//media.twiliocdn.com/sdk/js/video/releases/2.3.0/twilio-video.min.js"></script>
+ <script src="./index.js"></script>
+
+<!--  unfinished call control piece
+ --><!--  <script src="./callControl.js"></script>
+ -->
+ <script>
+   const joinButton = document.getElementById("join-button");
+   joinButton.addEventListener("click", async (event) => {
+     await joinRoom(event, "provider");
+   });
+   
+   const leaveButton = document.getElementById("leave-button");
+   leaveButton.addEventListener("click", onLeaveButtonClick);
+/*
+   const muteButton = document.getElementById("muteAudio");
+   muteButton.addEventListener("click", onMuteButtonClick);
+
+   const unmuteButton = document.getElementById("unmuteAudio");
+   unmuteButton.addEventListener("click", onUnmuteButtonClick);
+
+   const offVideoButton = document.getElementById("stopVideo");
+   offVideoButton.addEventListener("click", onStopVideoClick);
+
+   const onVideoButton = document.getElementById("startVideo");
+   onVideoButton.addEventListener("click", onStartVideoButtonClick);*/
+
+ </script>
+ </html>
+
