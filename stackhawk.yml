@@ -1,0 +1,54 @@
+# -- stackhawk configuration for Telehealth Demo --
+app:
+  # -- An applicationId obtained from the StackHawk platform. --
+  applicationId: 9e9e425e-21c3-4aac-88d6-cef569f41479 # (required)
+  # -- The environment for the applicationId defined in the StackHawk platform. --
+  env: Development # (required)
+  # -- The url of your application to scan --
+  host: http://localhost:3000 # (required)
+
+# -- If Authenticated Scanning is needed, add here --
+  # Authenticated Scanning Docs: https://docs.stackhawk.com/hawkscan/authenticated-scanning.html
+  # Authenticated Scanning Repo: https://github.com/kaakaww/scan-configuration/tree/main/Authentication
+  # Example app.authentication yaml configuration
+  # The name of your anti CSRF token. This is common for protecting form inputs and may be
+  # required to perform form based authentication.
+  antiCsrfParam: authenticity_token
+  # How should the scanner authenticate to your application when performing a scan.
+# How should the scanner authenticate to your application when performing a scan.
+  authentication:
+    # A username/password based authentication scheme
+    usernamePassword:
+      # The Content-Type expected by the loginPath FORM = application/x-www-form-urlencoded
+      type: FORM
+      # The path to POST username/password credentials.
+      loginPath: /patientlogin
+      usernameField: username
+      # The name of the password field
+      passwordField: password
+      # The value of the username field
+      scanUsername: ${SCAN_USERNAME}
+      # The value of the password field
+      scanPassword: ${SCAN_PASSWORD}
+    # Cookie based authorization. If you application maintains its session state on the server
+    # a common way to identify the user is via a cookie that is sent back with the authentication.
+    # This method supports managing the lifecycle of the cookie.
+    cookieAuthorization:
+      # The name of the cookie(s) that will be maintained for authenticated requests.
+      cookieNames:
+        - "connect.sid"
+    loggedInIndicator: "\\QLog out\\E"
+    loggedOutIndicator: "\\QLog in\\E"
+    # The testPath configuration is used to confirm scanning as an authenticated user is configured successfully.
+    testPath:
+      # The type is either HEADER or BODY and informs the success or fail regex of what part of the response to match against.
+      type: HEADER
+      # A path to validate that authentication was successful. This path should be only accessible to authenticated users.
+      path: /patientloggedin
+      # success criteria regex pattern.
+      success: ".*200.*"
+
+
+# -- Help Section --
+  # Docs: https://docs.stackhawk.com/
+  # Contact Support: support@stackhawk.com
